@@ -1,5 +1,5 @@
-(defproject chiefimage "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject chiefimage "0.1.1"
+  :description "A web service that redirects to the main image of a web page."
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.6.0"]

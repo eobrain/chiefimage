@@ -1,6 +1,6 @@
 # chiefimage
 
-FIXME
+A web service that redirects to the main image of a web page.
 
 ## Prerequisites
 
