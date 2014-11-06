@@ -20,7 +20,8 @@ appengine: $(WAR)
 	unzip -q $(WAR) -d /tmp/exploded$$$$; appcfg.sh --oauth2 --version=$(AE_VERSION) update /tmp/exploded$$$$
 
 $(WAR):
-	lein do  clean,  fgoc --force,  ring uberwar
+	lein do  fgoc --force,  ring uberwar
 
 clean:
 	rm -f $(WAR)
+	lein clean
