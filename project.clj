@@ -1,4 +1,4 @@
-(defproject chiefimage "0.1.1"
+(defproject chiefimage "0.1.2"
   :description "A web service that redirects to the main image of a web page."
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
