@@ -7,6 +7,7 @@ import (
 	"ring/util/response"
 	hickory "hickory/core"
 	s "hickory/select"
+	"chiefimage/core/memcache"
 )
 import type (
 	java.net.{URI, URLDecoder, ConnectException}
@@ -72,27 +73,41 @@ func image(url) {
 				new URI(url)->resolve(relativeUri)->toString()
 			}
 		}
+	} catch IllegalArgumentException  e {
+		println(url, e->getMessage())
+		"http://cdns2.freepik.com/free-photo/criminal-posing-for-police-picture_318-56541.jpg"
 	} catch ConnectException  e {
 		println(url, e->getMessage())
-		"http://pixabay.com/static/uploads/photo/2012/04/24/13/00/mark-39951_640.png"
+		"http://www.symantec.com/business/support/apps/infocenter/resources/images/page-loader.gif"
 	} catch FileNotFoundException e {
 		println(url, e->getMessage())
 		"http://upload.wikimedia.org/wikipedia/commons/a/aa/Empty_set.svg"
 	} catch IOException e {
 		println(url, e->getMessage())
-		"http://pixabay.com/static/uploads/photo/2012/04/24/13/00/mark-39951_640.png"
+		"http://images.clipartpanda.com/exception-clipart-136637359138898496exception.svg.med.png"
 	}
 }
 
+func urlDecode(s) {
+	URLDecoder::decode(s, "UTF-8")
+}
 
-compojure.defroutes(
-	appRoutes,
-	compojure.GET(
-		"/",
-		{params: QUERY_PARAMS},
-		response.redirect(image(URLDecoder::decode(params("page"), "UTF-8")))
-	),
-	route.notFound("Not Found")
-)
+func restorePlus(s) {
+	string.replace(s, " ", "+")
+}
 
-var App = defaults.wrapDefaults(appRoutes, defaults.siteDefaults)
+{
+	imageMemoized := memcache.Memoized(image)
+
+	compojure.defroutes(
+		appRoutes,
+		compojure.GET(
+			"/",
+			{params: QUERY_PARAMS},
+			response.redirect(imageMemoized(restorePlus(urlDecode(params("page")))))
+		),
+		route.notFound("Not Found")
+	)
+
+	var App = defaults.wrapDefaults(appRoutes, defaults.siteDefaults)
+}
